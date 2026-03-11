@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narrative — Your Career Story, Finally Told Right</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --cream: #faf7f2; --terra: #c17f4a; --terra-light: #e8d5c0;
+    --sage-light: #d4e5dc; --blush: #e8c4b8; --text: #2d2d2d; --muted: #7a7a7a; --border: #e2d9ce;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+  .logo { font-family: 'Lora', serif; font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; }
+  .logo span { color: var(--terra); }
+  .btn-solid { padding: 9px 22px; background: var(--terra); border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; color: white; transition: all 0.2s; }
+  .btn-solid:hover { background: var(--ink); }
+  .btn-outline { padding: 9px 22px; border: 1.5px solid var(--border); background: white; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; color: var(--text); }
+  .btn-outline:hover { border-color: var(--terra); color: var(--terra); }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  /* LANDING */
+  #landing { min-height:100vh; display:flex; flex-direction:column; position:relative; overflow:hidden; }
+  .bg-texture { position:absolute; inset:0; pointer-events:none; z-index:0;
+    background-image: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(193,127,74,0.08) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 20% 80%, rgba(90,122,106,0.07) 0%, transparent 60%); }
+  nav { position:relative; z-index:10; padding:28px 48px; display:flex; align-items:center; justify-content:space-between; }
+  .nav-badge { font-size:11px; font-weight:500; letter-spacing:0.08em; color:var(--muted); text-transform:uppercase; border:1px solid var(--border); padding:5px 12px; border-radius:20px; background:white; }
+  .hero { flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:60px 24px; position:relative; z-index:1; }
+  .hero-eyebrow { font-size:11px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--terra); margin-bottom:24px; display:flex; align-items:center; gap:8px; }
+  .hero-eyebrow::before,.hero-eyebrow::after { content:''; width:28px; height:1px; background:var(--terra); opacity:0.5; }
+  h1 { font-family:'Lora',serif; font-size:clamp(38px,6vw,72px); font-weight:600; line-height:1.12; color:var(--ink); max-width:780px; margin-bottom:24px; letter-spacing:-1px; }
+  h1 em { font-style:italic; color:var(--terra); }
+  .hero-sub { font-size:18px; font-weight:300; color:var(--muted); max-width:500px; line-height:1.6; margin-bottom:48px; }
+  .cta-btn { display:inline-flex; align-items:center; gap:10px; background:var(--ink); color:white; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500; padding:16px 32px; border-radius:50px; border:none; cursor:pointer; transition:all 0.2s; }
+  .cta-btn:hover { background:var(--terra); transform:translateY(-2px); box-shadow:0 12px 32px rgba(193,127,74,0.3); }
+  .cta-btn svg,.cta-btn:hover svg { transition:transform 0.2s; }
+  .cta-btn:hover svg { transform:translateX(3px); }
+  .social-proof { margin-top:48px; display:flex; align-items:center; gap:20px; font-size:13px; color:var(--muted); }
+  .proof-item { display:flex; align-items:center; gap:6px; }
+  .proof-dot { width:5px; height:5px; border-radius:50%; background:var(--terra-light); }
+
+  /* INTERVIEW */
+  .interview-nav { padding:20px 40px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); background:white; }
+  .progress-bar { flex:1; max-width:320px; height:4px; background:var(--terra-light); border-radius:4px; overflow:hidden; margin:0 24px; }
+  .progress-fill { height:100%; background:var(--terra); border-radius:4px; transition:width 0.5s ease; width:0%; }
+  .progress-label { font-size:12px; color:var(--muted); white-space:nowrap; }
+  .interview-body { flex:1; display:flex; flex-direction:column; max-width:700px; margin:0 auto; width:100%; padding:48px 24px; }
+  .chat-messages { flex:1; display:flex; flex-direction:column; gap:24px; margin-bottom:32px; min-height:300px; }
+  .msg { display:flex; gap:12px; animation:fadeUp 0.4s ease both; }
+  .msg-avatar { width:36px; height:36px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .msg.ai .msg-avatar { background:var(--terra-light); }
+  .msg.user { flex-direction:row-reverse; }
+  .msg.user .msg-avatar { background:var(--sage-light); font-size:11px; font-weight:500; }
+  .msg-bubble { max-width:82%; padding:14px 18px; border-radius:18px; font-size:15px; line-height:1.6; }
+  .msg.ai .msg-bubble { background:white; border:1px solid var(--border); border-bottom-left-radius:4px; }
+  .msg.user .msg-bubble { background:var(--ink); color:white; border-bottom-right-radius:4px; }
+  .typing-indicator { display:flex; gap:4px; padding:8px 4px; align-items:center; }
+  .typing-indicator span { width:7px; height:7px; background:var(--terra); border-radius:50%; animation:bounce 1.2s infinite; opacity:0.6; }
+  .typing-indicator span:nth-child(2) { animation-delay:0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay:0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0);} 30%{transform:translateY(-6px);opacity:1;} }
+  .input-area { display:flex; gap:12px; align-items:flex-end; background:white; border:1.5px solid var(--border); border-radius:16px; padding:12px 16px; transition:border-color 0.2s; }
+  .input-area:focus-within { border-color:var(--terra); }
+  .input-area textarea { flex:1; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text); background:transparent; resize:none; line-height:1.5; max-height:120px; }
+  .input-area textarea::placeholder { color:#bbb; }
+  .send-btn { width:36px; height:36px; background:var(--terra); border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s; color:white; }
+  .send-btn:hover { background:var(--ink); transform:scale(1.05); }
+  .send-btn:disabled { background:var(--terra-light); cursor:not-allowed; transform:none; }
+
+  /* REVIEW */
+  .review-header-bar { padding:16px 40px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); background:white; }
+  .review-body { max-width:820px; margin:0 auto; padding:48px 24px 80px; }
+  .review-intro { margin-bottom:36px; animation:fadeUp 0.4s ease both; }
+  .review-intro h2 { font-family:'Lora',serif; font-size:28px; font-weight:600; color:var(--ink); margin-bottom:8px; }
+  .review-intro p { font-size:15px; color:var(--muted); line-height:1.5; }
+  .edit-section { background:white; border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:20px; animation:fadeUp 0.4s ease both; }
+  .edit-section-title { font-size:11px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--terra); margin-bottom:18px; }
+  .field-row { margin-bottom:16px; }
+  .field-row:last-child { margin-bottom:0; }
+  .field-label { font-size:12px; font-weight:500; color:var(--muted); margin-bottom:6px; }
+  .field-input { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:10px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); background:var(--cream); outline:none; transition:border-color 0.2s; }
+  .field-input:focus { border-color:var(--terra); background:white; }
+  textarea.field-input { resize:vertical; min-height:80px; line-height:1.6; }
+  .chapter-edit { border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:14px; background:var(--cream); }
+  .chapter-edit-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .chapter-num { font-size:11px; font-weight:500; color:var(--terra); letter-spacing:0.08em; text-transform:uppercase; }
+  .remove-btn { background:none; border:none; cursor:pointer; color:#ccc; font-size:20px; line-height:1; padding:2px; transition:color 0.2s; }
+  .remove-btn:hover { color:#e74c3c; }
+  .chapter-grid { display:grid; grid-template-columns:1fr 1.5fr; gap:12px; margin-bottom:12px; }
+  .add-chapter-btn { display:flex; align-items:center; gap:8px; padding:10px 16px; border:1.5px dashed var(--border); border-radius:10px; background:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; color:var(--muted); transition:all 0.2s; width:100%; justify-content:center; }
+  .add-chapter-btn:hover { border-color:var(--terra); color:var(--terra); background:rgba(193,127,74,0.04); }
+  .skills-edit-area { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; min-height:36px; }
+  .skill-edit-tag { display:flex; align-items:center; gap:6px; padding:6px 12px; background:var(--cream); border:1px solid var(--border); border-radius:20px; font-size:13px; }
+  .skill-remove { background:none; border:none; cursor:pointer; color:#bbb; font-size:15px; line-height:1; padding:0; transition:color 0.15s; }
+  .skill-remove:hover { color:#e74c3c; }
+  .skill-add-row { display:flex; gap:8px; }
+  .skill-add-input { flex:1; padding:8px 14px; border:1.5px solid var(--border); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; outline:none; transition:border-color 0.2s; background:var(--cream); }
+  .skill-add-input:focus { border-color:var(--terra); background:white; }
+  .skill-add-btn { padding:8px 16px; background:var(--ink); color:white; border:none; border-radius:8px; font-size:13px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:background 0.2s; }
+  .skill-add-btn:hover { background:var(--terra); }
+  .values-grid-edit { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .value-edit { border:1px solid var(--border); border-radius:12px; padding:16px; background:var(--cream); }
+  .value-edit-icon { font-size:20px; margin-bottom:10px; }
+  .review-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:32px; }
+  .publish-btn { padding:14px 32px; background:var(--ink); color:white; border:none; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:10px; }
+  .publish-btn:hover { background:var(--terra); transform:translateY(-1px); box-shadow:0 8px 24px rgba(193,127,74,0.3); }
+
+  /* PROFILE */
+  .profile-nav { padding:16px 40px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); background:white; }
+  .profile-actions { display:flex; gap:10px; }
+  .profile-content { max-width:760px; margin:0 auto; padding:56px 24px; }
+  .profile-hero { display:flex; gap:32px; align-items:flex-start; margin-bottom:48px; animation:fadeUp 0.5s ease both; }
+  .profile-avatar { width:88px; height:88px; border-radius:50%; background:linear-gradient(135deg,var(--terra-light),var(--blush)); display:flex; align-items:center; justify-content:center; font-family:'Lora',serif; font-size:32px; color:var(--terra); flex-shrink:0; border:3px solid white; box-shadow:0 4px 20px rgba(193,127,74,0.15); }
+  .profile-intro h2 { font-family:'Lora',serif; font-size:30px; font-weight:600; color:var(--ink); margin-bottom:6px; letter-spacing:-0.5px; }
+  .profile-intro .tagline { font-size:16px; color:var(--terra); font-weight:500; margin-bottom:12px; }
+  .profile-intro .location { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:4px; }
+  .profile-section { margin-bottom:40px; animation:fadeUp 0.5s ease both; }
+  .profile-section:nth-child(2){animation-delay:0.1s;} .profile-section:nth-child(3){animation-delay:0.2s;} .profile-section:nth-child(4){animation-delay:0.3s;}
+  .section-label { font-size:10px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .narrative-text { font-family:'Lora',serif; font-size:17px; line-height:1.8; color:var(--text); font-style:italic; }
+  .chapter-card { background:white; border:1px solid var(--border); border-radius:14px; padding:22px 24px; margin-bottom:14px; position:relative; overflow:hidden; }
+  .chapter-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--terra); border-radius:4px 0 0 4px; }
+  .chapter-period { font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--terra); margin-bottom:6px; }
+  .chapter-title { font-family:'Lora',serif; font-size:17px; font-weight:600; color:var(--ink); margin-bottom:8px; }
+  .chapter-desc { font-size:14px; color:var(--muted); line-height:1.6; }
+  .skills-grid { display:flex; flex-wrap:wrap; gap:8px; }
+  .skill-tag { padding:6px 14px; background:white; border:1px solid var(--border); border-radius:20px; font-size:13px; color:var(--text); }
+  .profile-values-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .value-card { background:white; border:1px solid var(--border); border-radius:12px; padding:18px 20px; }
+  .value-card .icon { font-size:20px; margin-bottom:8px; }
+  .value-card .value-title { font-size:14px; font-weight:500; color:var(--ink); margin-bottom:4px; }
+  .value-card .value-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+
+  /* LOADING */
+  #loading-overlay { display:none; position:fixed; inset:0; background:rgba(250,247,242,0.93); backdrop-filter:blur(8px); z-index:100; flex-direction:column; align-items:center; justify-content:center; gap:24px; }
+  .loading-spinner { width:48px; height:48px; border:3px solid var(--terra-light); border-top-color:var(--terra); border-radius:50%; animation:spin 0.9s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .loading-text { font-family:'Lora',serif; font-size:18px; color:var(--ink); font-style:italic; }
+  .loading-sub { font-size:13px; color:var(--muted); margin-top:-16px; }
+
+  @media(max-width:600px){
+    nav,.interview-nav,.review-header-bar,.profile-nav{padding:14px 20px;}
+    .profile-hero{flex-direction:column;gap:16px;}
+    .profile-values-grid,.values-grid-edit{grid-template-columns:1fr;}
+    .chapter-grid{grid-template-columns:1fr;}
+    .review-actions{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="landing">
+  <div class="bg-texture"></div>
+  <nav>
+    <div class="logo">narr<span>a</span>tive</div>
+    <div class="nav-badge">Early Access</div>
+  </nav>
+  <div class="hero">
+    <div class="hero-eyebrow">Your career story</div>
+    <h1>Your path wasn't straight.<br><em>That's the point.</em></h1>
+    <p class="hero-sub">Narrative uses AI to help you turn career gaps, pivots, and non-linear chapters into a story that lands — finally.</p>
+    <button class="cta-btn" onclick="startInterview()">
+      Tell my story
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="social-proof">
+      <div class="proof-item"><div class="proof-dot"></div><span>Takes 5 minutes</span></div>
+      <div class="proof-item"><div class="proof-dot"></div><span>No resume needed</span></div>
+      <div class="proof-item"><div class="proof-dot"></div><span>Gaps welcome</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- INTERVIEW -->
+<div id="interview" style="display:none; flex-direction:column; min-height:100vh;">
+  <div class="interview-nav">
+    <div class="logo">narr<span style="color:var(--terra)">a</span>tive</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Question 1 of 7</div>
+  </div>
+  <div class="interview-body">
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="input-area">
+      <textarea id="userInput" rows="1" placeholder="Type your answer…" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 2.5L7 9M13.5 2.5L9 13.5L7 9L2.5 7L13.5 2.5Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- REVIEW -->
+<div id="review" style="display:none;">
+  <div class="review-header-bar">
+    <div class="logo">narr<span style="color:var(--terra)">a</span>tive</div>
+    <button class="btn-outline" onclick="resetApp()">← Start over</button>
+  </div>
+  <div class="review-body">
+    <div class="review-intro">
+      <h2>Review your profile ✏️</h2>
+      <p>We've drafted your story from your answers. Fix anything that looks off — dates, titles, descriptions — then publish when you're ready.</p>
+    </div>
+
+    <div class="edit-section">
+      <div class="edit-section-title">Your Identity</div>
+      <div class="field-row"><div class="field-label">Full name</div><input type="text" class="field-input" id="edit-name" placeholder="Your full name"></div>
+      <div class="field-row"><div class="field-label">Tagline — a human description of who you are (not just a job title)</div><input type="text" class="field-input" id="edit-tagline" placeholder="e.g. A builder, a caregiver, and a returner — now ready to lead again"></div>
+    </div>
+
+    <div class="edit-section">
+      <div class="edit-section-title">Your Story</div>
+      <div class="field-row"><div class="field-label">First-person career narrative — the heart of your profile</div><textarea class="field-input" id="edit-narrative" rows="5"></textarea></div>
+    </div>
+
+    <div class="edit-section">
+      <div class="edit-section-title">Your Chapters</div>
+      <div id="chapters-editor"></div>
+      <button class="add-chapter-btn" onclick="addChapter()">+ Add a chapter</button>
+    </div>
+
+    <div class="edit-section">
+      <div class="edit-section-title">Skills & Strengths</div>
+      <div class="skills-edit-area" id="skills-editor"></div>
+      <div class="skill-add-row">
+        <input type="text" class="skill-add-input" id="new-skill-input" placeholder="Type a skill and press Add…" onkeydown="if(event.key==='Enter')addSkill()">
+        <button class="skill-add-btn" onclick="addSkill()">Add</button>
+      </div>
+    </div>
+
+    <div class="edit-section">
+      <div class="edit-section-title">What You Stand For</div>
+      <div class="values-grid-edit" id="values-editor"></div>
+    </div>
+
+    <div class="edit-section">
+      <div class="edit-section-title">Closing Line</div>
+      <div class="field-row"><div class="field-label">One memorable sentence — the lasting impression you want to leave</div><input type="text" class="field-input" id="edit-closing" placeholder="e.g. I didn't take a detour. I took the scenic route."></div>
+    </div>
+
+    <div class="review-actions">
+      <button class="btn-outline" onclick="resetApp()">Start over</button>
+      <button class="publish-btn" onclick="publishProfile()">
+        Publish my profile
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="profile" style="display:none;">
+  <div class="profile-nav">
+    <div class="logo">narr<span style="color:var(--terra)">a</span>tive</div>
+    <div class="profile-actions">
+      <button class="btn-outline" onclick="goBackToEdit()">← Edit</button>
+      <button class="btn-solid">Share profile ↗</button>
+    </div>
+  </div>
+  <div class="profile-content" id="profileContent"></div>
+</div>
+
+<!-- LOADING -->
+<div id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Crafting your narrative…</div>
+  <div class="loading-sub">Weaving your chapters into a story</div>
+</div>
+
+<script>
+const QUESTIONS = [
+  "Hi! I'm here to help you tell your career story — the real one, gaps and all. 💛\n\nLet's start with the basics: what's your full name, and what field or industry have you worked in?",
+  "Great! Now walk me through your career timeline with real dates. List each role or phase like this:\n\n\"Marketing Manager at Acme Corp, 2008–2014\nCaregiver sabbatical, 2014–2020\nFreelance consultant, 2020–2023\"\n\nInclude everything — jobs, gaps, study, freelance, caregiving. Don't skip anything.",
+  "Thanks for that. Tell me more about your gap or sabbatical. What were you actually doing during that time, and what did it give you that a conventional career path couldn't?",
+  "Looking at your whole journey — what skills and strengths have you built? Include technical skills AND the human ones: resilience, systems thinking, leadership, empathy, whatever applies to you.",
+  "What kind of work are you moving toward next? Be specific — what industry, what kind of role, what problems do you want to solve?",
+  "Almost done. Is there anything else that makes your story yours — education, awards, projects, causes, or experiences we haven't covered yet?",
+  "Last one: if someone reads your profile and walks away with one feeling or impression, what do you want that to be? And do you have a personal motto or closing line that captures your whole story?"
+];
+
+let currentQ = 0, answers = [], waitingForResponse = false, profileData = null;
+
+function startInterview() {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('interview').style.display = 'flex';
+  setTimeout(() => addAIMessage(QUESTIONS[0]), 400);
+  updateProgress();
+}
+
+function updateProgress() {
+  document.getElementById('progressFill').style.width = (currentQ / QUESTIONS.length * 100) + '%';
+  document.getElementById('progressLabel').textContent = `Question ${Math.min(currentQ+1, QUESTIONS.length)} of ${QUESTIONS.length}`;
+}
+
+function addAIMessage(text) {
+  const c = document.getElementById('chatMessages');
+  const t = document.createElement('div');
+  t.className = 'msg ai'; t.id = 'typing';
+  t.innerHTML = `<div class="msg-avatar">✦</div><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+  c.appendChild(t); c.scrollTop = c.scrollHeight;
+  setTimeout(() => {
+    t.remove();
+    const m = document.createElement('div');
+    m.className = 'msg ai';
+    m.innerHTML = `<div class="msg-avatar">✦</div><div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+    c.appendChild(m); c.scrollTop = c.scrollHeight;
+    waitingForResponse = false;
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('userInput').focus();
+  }, 900 + Math.random()*400);
+}
+
+function addUserMessage(text) {
+  const c = document.getElementById('chatMessages');
+  const m = document.createElement('div');
+  m.className = 'msg user';
+  m.innerHTML = `<div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div><div class="msg-avatar">you</div>`;
+  c.appendChild(m); c.scrollTop = c.scrollHeight;
+}
+
+function handleKey(e) { if (e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
+
+function sendMessage() {
+  if (waitingForResponse) return;
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+  addUserMessage(text); answers.push(text);
+  input.value=''; input.style.height='auto';
+  waitingForResponse=true; document.getElementById('sendBtn').disabled=true;
+  currentQ++; updateProgress();
+  if (currentQ < QUESTIONS.length) setTimeout(()=>addAIMessage(QUESTIONS[currentQ]),600);
+  else setTimeout(()=>generateProfile(),800);
+}
+
+async function generateProfile() {
+  document.getElementById('loading-overlay').style.display='flex';
+
+  // ── STEP 1: Parse everything directly from answers (no API needed) ──
+  const parsed = parseAnswersDirectly();
+
+  // ── STEP 2: Polish narrative via secure serverless proxy ──
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: parsed.name,
+        careerHistory: answers[1],
+        sabbatical: answers[2],
+        movingToward: answers[4],
+        extraContext: answers[5] || 'none'
+      })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.narrative && data.narrative.length > 50) parsed.narrative = data.narrative;
+    }
+  } catch(e) { console.log('API narrative polish skipped:', e.message); }
+
+  profileData = parsed;
+  document.getElementById('loading-overlay').style.display='none';
+  document.getElementById('interview').style.display='none';
+  showReview();
+}
+
+function parseAnswersDirectly() {
+  // ── Name (answer 0) ──
+  const rawName = (answers[0]||'').trim();
+  // Try to extract just the name before any job title
+  const nameParts = rawName.split(/\s{2,}|\n|,|–|-/);
+  const name = nameParts[0].trim() || rawName;
+  const initial = name[0]?.toUpperCase() || 'N';
+
+  // ── Chapters from timeline (answer 1) ──
+  const chapters = parseTimeline(answers[1]||'');
+
+  // ── Skills (answer 3) ──
+  const skillsRaw = answers[3]||'';
+  // Split on commas, newlines, bullets — filter noise
+  const skills = skillsRaw
+    .replace(/Key Skills[:\s]*/i,'')
+    .replace(/Human Skills[:\s]*/i,'\n')
+    .split(/[,\n•]+/)
+    .map(s=>s.replace(/^[-\s•*]+/,'').trim())
+    .filter(s=>s.length>1 && s.length<50 && !/^(and|the|or|a|an)$/i.test(s));
+
+  // ── Closing line (answer 6) ──
+  const closingRaw = (answers[6]||'').trim();
+  // Take first sentence if long
+  const closingLine = closingRaw.split(/[.!?]/)[0]?.trim() || closingRaw.slice(0,120);
+
+  // ── Tagline from name + target role ──
+  const targetRole = (answers[4]||'').trim().slice(0,60);
+  const gapDesc = (answers[2]||'').slice(0,80);
+  const tagline = targetRole
+    ? `From SAP consultant to ${targetRole} — a story of reinvention`
+    : `A career built on reinvention, resilience, and relentless growth`;
+
+  // ── Narrative fallback (will be replaced by API if available) ──
+  const narrative = [
+    answers[0] ? `I'm ${name}, and my career has never followed a straight line — and I wouldn't have it any other way.` : '',
+    answers[1] ? `My professional journey spans roles in ${extractRoles(answers[1])}.` : '',
+    answers[2] ? `During my sabbatical, I ${answers[2].slice(0,120).toLowerCase().replace(/^i\s+/,'')}.` : '',
+    answers[4] ? `Now I'm moving toward ${answers[4].trim()} — bringing everything I've learned along the way.` : ''
+  ].filter(Boolean).join(' ');
+
+  // ── Values — derive from answers ──
+  const values = [
+    {icon:'🌱', title:'Lifelong Learning', description: answers[2]?.includes('Masters') || answers[2]?.includes('school') ? 'Pursued a Master\'s degree during the sabbatical, proving growth never stops.' : 'Believes every chapter — even the quiet ones — is an opportunity to grow.'},
+    {icon:'🔗', title:'Family & Purpose', description: answers[2]?.toLowerCase().includes('kids') || answers[2]?.toLowerCase().includes('raised') ? 'Chose to step back to raise children — a deliberate act of priority, not absence.' : 'Driven by purpose over title, people over process.'},
+    {icon:'💡', title:'Technical Depth', description: skills.length > 3 ? `Brings hands-on expertise across ${skills.slice(0,3).join(', ')} and more.` : 'Combines deep technical skill with human insight.'},
+    {icon:'🧭', title:'Reinvention', description: 'Has successfully pivoted careers more than once — and built a roadmap others can follow.'}
+  ];
+
+  return { name, initial, tagline, narrative, chapters, skills, values, closingLine };
+}
+
+function parseTimeline(text) {
+  if (!text.trim()) return [];
+  const chapters = [];
+
+  // Match blocks that start with a company/role header followed by date
+  // Handles: "Company — Role\nLocation | MonYYYY – MonYYYY" or "Role at Company, YYYY–YYYY"
+  const blocks = text.split(/\n(?=[A-Z])/); // split at lines starting with capital letter
+
+  const datePattern = /([A-Za-z]{0,4}\s?\d{4})\s*[-–—]+\s*([A-Za-z]{0,4}\s?\d{4}|present|now|current)/i;
+  const yearOnlyPattern = /(\d{4})\s*[-–—]+\s*(\d{4}|present|now|current)/i;
+
+  blocks.forEach(block => {
+    const lines = block.split('\n').map(l=>l.trim()).filter(l=>l);
+    if (!lines.length) return;
+
+    // Find the date in this block
+    let period = null;
+    let dateLineIdx = -1;
+    for (let i=0; i<lines.length; i++) {
+      const m = lines[i].match(datePattern) || lines[i].match(yearOnlyPattern);
+      if (m) {
+        period = `${m[1].trim()}–${m[2].trim()}`;
+        // Normalise "Jun 2011" style
+        period = period.replace(/([A-Za-z]+)\s(\d{4})/g, '$1 $2');
+        dateLineIdx = i;
+        break;
+      }
+    }
+    if (!period) return; // skip blocks with no date
+
+    // Title = first line (company + role), cleaned up
+    const titleLine = lines[0].replace(datePattern,'').replace(yearOnlyPattern,'').replace(/[|\-–,]+$/,'').trim();
+    const title = titleLine || 'Career Chapter';
+
+    // Description = bullet points in the block
+    const bullets = lines
+      .filter(l => l.startsWith('•') || l.startsWith('-') || l.startsWith('*'))
+      .map(l => l.replace(/^[•\-*\s]+/,'').trim())
+      .slice(0,2); // take first 2 bullets max
+
+    const description = bullets.length
+      ? bullets.join(' ')
+      : lines.filter((_,i)=>i!==0&&i!==dateLineIdx).join(' ').slice(0,180)||'';
+
+    chapters.push({ period, title, description });
+  });
+
+  // Also catch sabbatical / gap entries that may not fit company format
+  // e.g. "Caregiver sabbatical, 2011–2024" or plain text in answer 2
+  if (chapters.length === 0 || !text.toLowerCase().includes('sabbat')) {
+    const gapAns = answers[2]||'';
+    if (gapAns.trim()) {
+      // Try to infer gap years from surrounding chapters
+      const lastYear = chapters.length ? extractLastYear(chapters[chapters.length-1].period) : null;
+      const gapPeriod = lastYear ? `${lastYear}–Present` : '[Year]–Present';
+      chapters.push({
+        period: gapPeriod,
+        title: 'The Sabbatical',
+        description: gapAns.slice(0,200)
+      });
+    }
+  }
+
+  return chapters.length ? chapters : [
+    {period:'[Year – Year]', title:'Your First Chapter', description:'Describe this phase of your career.'},
+    {period:'[Year – Year]', title:'The Sabbatical', description:'Describe what you did and what it gave you.'},
+    {period:'[Year] – Present', title:'The Return', description:'Describe what you\'re building now.'}
+  ];
+}
+
+function extractRoles(text) {
+  const roles = [];
+  const lines = text.split('\n').map(l=>l.trim());
+  lines.forEach(l => {
+    const m = l.match(/—\s*(.+?)(?:\n|$)/) || l.match(/[-–]\s*([A-Z].+?Consultant|Engineer|Manager|Analyst|Developer)/);
+    if (m) roles.push(m[1].trim());
+  });
+  return roles.length ? roles.slice(0,3).join(', ') : 'technology and enterprise software';
+}
+
+function extractLastYear(period) {
+  const m = period.match(/(\d{4})\s*[-–]/);
+  return m ? m[1] : null;
+}
+
+// ── REVIEW ─────────────────────────────────────────────
+function showReview() {
+  const p = profileData;
+  document.getElementById('review').style.display='block';
+  document.getElementById('edit-name').value = p.name||'';
+  document.getElementById('edit-tagline').value = p.tagline||'';
+  document.getElementById('edit-narrative').value = p.narrative||'';
+  document.getElementById('edit-closing').value = p.closingLine||'';
+  renderChapters(p.chapters||[]);
+  renderSkills(p.skills||[]);
+  renderValues(p.values||[]);
+  window.scrollTo(0,0);
+}
+
+function renderChapters(chapters) {
+  document.getElementById('chapters-editor').innerHTML = chapters.map((c,i)=>`
+    <div class="chapter-edit" data-i="${i}">
+      <div class="chapter-edit-header">
+        <div class="chapter-num">Chapter ${i+1}</div>
+        <button class="remove-btn" onclick="removeChapter(${i})">×</button>
+      </div>
+      <div class="chapter-grid">
+        <div class="field-row" style="margin:0"><div class="field-label">Time period</div><input type="text" class="field-input" data-f="period" value="${esc(c.period)}" placeholder="e.g. 2010–2018"></div>
+        <div class="field-row" style="margin:0"><div class="field-label">Chapter title</div><input type="text" class="field-input" data-f="title" value="${esc(c.title)}" placeholder="e.g. The Builder Years"></div>
+      </div>
+      <div class="field-row" style="margin-top:12px;margin-bottom:0"><div class="field-label">Description</div><textarea class="field-input" data-f="description" rows="2">${esc(c.description)}</textarea></div>
+    </div>`).join('');
+}
+
+function renderSkills(skills) {
+  document.getElementById('skills-editor').innerHTML = skills.map((s,i)=>
+    `<div class="skill-edit-tag" data-i="${i}"><span>${esc(s)}</span><button class="skill-remove" onclick="removeSkill(${i})">×</button></div>`
+  ).join('');
+}
+
+function renderValues(values) {
+  document.getElementById('values-editor').innerHTML = values.map((v,i)=>`
+    <div class="value-edit">
+      <div class="value-edit-icon">${v.icon||'✦'}</div>
+      <div class="field-row" style="margin-bottom:8px"><div class="field-label">Title</div><input type="text" class="field-input" data-vi="${i}" data-vf="title" value="${esc(v.title)}" placeholder="Value name"></div>
+      <div class="field-row" style="margin:0"><div class="field-label">Description</div><input type="text" class="field-input" data-vi="${i}" data-vf="description" value="${esc(v.description)}" placeholder="One sentence…"></div>
+    </div>`).join('');
+}
+
+function addChapter() {
+  const ch = getChapters(); ch.push({period:'',title:'',description:''});
+  renderChapters(ch);
+  document.getElementById('chapters-editor').lastElementChild.querySelector('input').focus();
+}
+function removeChapter(i) { const ch=getChapters(); ch.splice(i,1); renderChapters(ch); }
+function addSkill() {
+  const inp=document.getElementById('new-skill-input'), val=inp.value.trim();
+  if(!val)return; const sk=getSkills(); sk.push(val); renderSkills(sk); inp.value=''; inp.focus();
+}
+function removeSkill(i) { const sk=getSkills(); sk.splice(i,1); renderSkills(sk); }
+
+function getChapters() {
+  return Array.from(document.querySelectorAll('#chapters-editor .chapter-edit')).map(d=>({
+    period: d.querySelector('[data-f="period"]')?.value||'',
+    title: d.querySelector('[data-f="title"]')?.value||'',
+    description: d.querySelector('[data-f="description"]')?.value||''
+  }));
+}
+function getSkills() { return Array.from(document.querySelectorAll('#skills-editor .skill-edit-tag span')).map(s=>s.textContent); }
+function getValues() {
+  const orig = profileData?.values||[];
+  return Array.from(document.querySelectorAll('#values-editor .value-edit')).map((d,i)=>({
+    icon: orig[i]?.icon||'✦',
+    title: d.querySelector('[data-vf="title"]')?.value||'',
+    description: d.querySelector('[data-vf="description"]')?.value||''
+  }));
+}
+
+function publishProfile() {
+  profileData = {
+    ...profileData,
+    name: document.getElementById('edit-name').value,
+    initial: (document.getElementById('edit-name').value||'Y')[0].toUpperCase(),
+    tagline: document.getElementById('edit-tagline').value,
+    narrative: document.getElementById('edit-narrative').value,
+    closingLine: document.getElementById('edit-closing').value,
+    chapters: getChapters(), skills: getSkills(), values: getValues()
+  };
+  document.getElementById('review').style.display='none';
+  renderProfile(profileData);
+}
+
+// ── PROFILE ────────────────────────────────────────────
+function renderProfile(p) {
+  document.getElementById('profile').style.display='block';
+  document.getElementById('profileContent').innerHTML = `
+    <div class="profile-hero">
+      <div class="profile-avatar">${p.initial||'?'}</div>
+      <div class="profile-intro">
+        <h2>${p.name}</h2>
+        <div class="tagline">${p.tagline}</div>
+        <div class="location"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="5" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M6 1C3.8 1 2 2.8 2 5c0 3 4 6 4 6s4-3 4-6c0-2.2-1.8-4-4-4z" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+        narrative.app/${(p.name||'you').toLowerCase().replace(/\s+/g,'')}</div>
+      </div>
+    </div>
+    <div class="profile-section">
+      <div class="section-label">My Story</div>
+      <p class="narrative-text">${p.narrative}</p>
+    </div>
+    <div class="profile-section">
+      <div class="section-label">My Chapters</div>
+      ${(p.chapters||[]).map(c=>`<div class="chapter-card"><div class="chapter-period">${c.period}</div><div class="chapter-title">${c.title}</div><div class="chapter-desc">${c.description}</div></div>`).join('')}
+    </div>
+    <div class="profile-section">
+      <div class="section-label">Skills & Strengths</div>
+      <div class="skills-grid">${(p.skills||[]).map(s=>`<div class="skill-tag">${s}</div>`).join('')}</div>
+    </div>
+    <div class="profile-section">
+      <div class="section-label">What I Stand For</div>
+      <div class="profile-values-grid">${(p.values||[]).map(v=>`<div class="value-card"><div class="icon">${v.icon}</div><div class="value-title">${v.title}</div><div class="value-desc">${v.description}</div></div>`).join('')}</div>
+    </div>
+    <div class="profile-section" style="text-align:center;padding:32px 0 0;">
+      <p style="font-family:'Lora',serif;font-style:italic;font-size:20px;color:var(--terra);line-height:1.6;">"${p.closingLine}"</p>
+    </div>`;
+  window.scrollTo(0,0);
+}
+
+function goBackToEdit() { document.getElementById('profile').style.display='none'; document.getElementById('review').style.display='block'; window.scrollTo(0,0); }
+
+function resetApp() {
+  currentQ=0; answers=[]; waitingForResponse=false; profileData=null;
+  document.getElementById('chatMessages').innerHTML='';
+  ['profile','review','interview'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('landing').style.display='flex';
+  document.getElementById('progressFill').style.width='0%';
+  window.scrollTo(0,0);
+}
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
